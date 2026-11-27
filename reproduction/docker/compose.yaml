@@ -1,0 +1,20 @@
+services:
+  reproduction:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: harm-recsys-reproduction:cpu
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    working_dir: /workspace
+    volumes:
+      - ../../:/workspace
+    environment:
+      RUNS: "${RUNS:-10}"
+      CORES: "${CORES:-8}"
+      OUTPUT_DIR: "${OUTPUT_DIR:-/workspace/reproduction/results/main}"
+      LOG_DIR: "${LOG_DIR:-/workspace/reproduction/logs}"
+      MPLCONFIGDIR: /tmp/matplotlib
+    command: ["bash", "reproduction/docker/run_experiment.sh"]
+    init: true
+    restart: "no"
+    stop_grace_period: 30s
